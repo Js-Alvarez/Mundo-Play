@@ -1,0 +1,99 @@
+package reproductor.play;
+
+import reproductor.play.contenido.Pelicula;
+import reproductor.play.plataforma.Plataforma;
+import reproductor.play.plataforma.Usuario;
+import reproductor.play.util.ScannerUtils;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static final String NOMBRE_PLATAFORMA = "MUNDO PLAY \uD83C\uDF7F ";
+    public static final String VERSION= "1.0.0";
+
+    public  static final  int AGREGAR =1;
+    public  static final  int MOSTRAR_TODO =2;
+    public  static final  int BUSCAR_POR_TITULO=3;
+    public  static final  int BUSCAR_POR_GENERO=4;
+    public  static final  int ELIMINAR =8;
+    public  static final int SALIR=9;
+
+    public static void main(String[] args) {
+        Plataforma plataforma = new Plataforma(NOMBRE_PLATAFORMA);
+        System.out.println(NOMBRE_PLATAFORMA+" v " + VERSION);
+
+        cargarPeliculas(plataforma);
+
+        while(true){
+            int opcionElegida = ScannerUtils.capturarNumero("""
+                   Ingrese una de las siguientes opciones: 
+                   1.Agregar contenido 
+                   2. Mostrar todo
+                   3. Buscar por titulo
+                   4. Buscar por genero
+                   8. Eliminar
+                   9. Salir
+                    """);
+
+            switch (opcionElegida){
+                case AGREGAR->{
+                    String nombre = ScannerUtils.capturarTexto("Nombre de la pelicula");
+                    String genero = ScannerUtils.capturarTexto("Genero de la pelicula");
+                    double calificaion = ScannerUtils.capturarDecimal("Calificacion");
+                    int duracion= ScannerUtils.capturarNumero("Duracion del contenido de la pelicula");
+
+                    plataforma.agregar(new  Pelicula(nombre,duracion,genero, calificaion));
+                }
+                case MOSTRAR_TODO-> plataforma.mostrarTitulos();
+                case BUSCAR_POR_TITULO -> {
+                    String nombreBuscado = ScannerUtils.capturarTexto("Nombre de la pelicula a buscar");
+                    Pelicula pelicula= plataforma.buscarPorTitulo(nombreBuscado);
+
+                    if (pelicula != null) {
+                        System.out.println(pelicula.obtenerFichaTecnica());
+                    } else {
+                        System.out.println(nombreBuscado + " No existe esa pelicula dentro de " + plataforma.getNombre());
+                    }
+                }
+                case BUSCAR_POR_GENERO -> {
+                    String generoBuscado = ScannerUtils.capturarTexto("Nombre del genero de la pelicula a buscar");
+
+                    List<Pelicula> contenidoPorGenero = plataforma.buscarPorGenero(generoBuscado);
+
+                    System.out.println( contenidoPorGenero.size() + " encontrados para el genero " + generoBuscado);
+                    contenidoPorGenero.forEach(contenido -> System.out.println(contenido.obtenerFichaTecnica()));
+                }
+                case ELIMINAR ->{
+                    String nombreAEliminar= ScannerUtils.capturarTexto("Nombre de la pelicula que quieres eliminar: ");
+                    Pelicula contenido= plataforma.buscarPorTitulo(nombreAEliminar);
+
+                    if (contenido != null) {
+                        plataforma.eliminar(contenido);
+                        System.out.println( nombreAEliminar + " fue eliminado correctamente");
+                    } else {
+                        System.out.println(nombreAEliminar + " No existe dentro de " + plataforma.getNombre());
+                    }
+                }
+
+                case SALIR -> System.exit(0);
+                }
+        }
+    }
+
+            private static  void cargarPeliculas(Plataforma plataforma){
+                plataforma.agregar(new Pelicula("Shrek", 90, "Animada",5));
+                plataforma.agregar(new Pelicula("Inception", 148, "Ciencia Ficción",2.5));
+                plataforma.agregar(new Pelicula("Titanic", 195, "Drama", 4.6));
+                plataforma.agregar(new Pelicula("John Wick", 101, "Acción",5));
+                plataforma.agregar(new Pelicula("El Conjuro", 112, "Terror", 3.0));
+                plataforma.agregar(new Pelicula("Coco", 105, "Animada", 4.7));
+                plataforma.agregar(new Pelicula("Interstellar", 169, "Ciencia Ficción", 5));
+                plataforma.agregar(new Pelicula("Joker", 122, "Drama",5));
+                plataforma.agregar(new Pelicula("Toy Story", 81, "Animada", 4.5));
+                plataforma.agregar(new Pelicula("Avengers: Endgame", 181, "Acción", 3.9));
+            }
+
+
+}
+
