@@ -29,7 +29,7 @@ public class Pelicula {
     }
 
     public String obtenerFichaTecnica(){
-            return titulo + "(" + anioEstreno + ")\n"+ "Genero: "+ genero+"\n"+ "Calificacion: "+ calificacion +" /5";
+            return "⭐"+ titulo + "(" + anioEstreno + ")\n"+ "Genero: "+ genero+"\n"+ "Calificacion: "+ calificacion +" /5\n";
     }
 
     public void calificar(double calificacion) {
@@ -64,6 +64,10 @@ public class Pelicula {
         return calificacion>=4;
     }
 
+    public int getDuracion() {
+        return duracion;
+    }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -74,4 +78,6 @@ public class Pelicula {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+
 }

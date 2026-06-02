@@ -16,6 +16,8 @@ public class Main {
     public  static final  int MOSTRAR_TODO =2;
     public  static final  int BUSCAR_POR_TITULO=3;
     public  static final  int BUSCAR_POR_GENERO=4;
+    public  static final  int VER_POPULARES=5;
+    public  static final  int VER_TODO=6;
     public  static final  int ELIMINAR =8;
     public  static final int SALIR=9;
 
@@ -25,13 +27,16 @@ public class Main {
 
         cargarPeliculas(plataforma);
 
+        System.out.println("Más de "+ plataforma.getDuracionTotal()+ " minutos de contenido! \n" );
+
         while(true){
             int opcionElegida = ScannerUtils.capturarNumero("""
                    Ingrese una de las siguientes opciones: 
                    1.Agregar contenido 
                    2. Mostrar todo
-                   3. Buscar por titulo
+                   3. Buscar por titulo5
                    4. Buscar por genero
+                   5. Ver las peliculas más POPULARES
                    8. Eliminar
                    9. Salir
                     """);
@@ -45,7 +50,10 @@ public class Main {
 
                     plataforma.agregar(new  Pelicula(nombre,duracion,genero, calificaion));
                 }
-                case MOSTRAR_TODO-> plataforma.mostrarTitulos();
+                case MOSTRAR_TODO-> {
+                    List<String>titulo=plataforma.getTitulos();
+                    titulo.forEach(System.out::println);
+                }
                 case BUSCAR_POR_TITULO -> {
                     String nombreBuscado = ScannerUtils.capturarTexto("Nombre de la pelicula a buscar");
                     Pelicula pelicula= plataforma.buscarPorTitulo(nombreBuscado);
@@ -63,6 +71,12 @@ public class Main {
 
                     System.out.println( contenidoPorGenero.size() + " encontrados para el genero " + generoBuscado);
                     contenidoPorGenero.forEach(contenido -> System.out.println(contenido.obtenerFichaTecnica()));
+                }
+                case VER_POPULARES -> {
+                    int cantidad = ScannerUtils.capturarNumero("Cantidad de peliculas que quieres que te muestre");
+
+                    List<Pelicula>contenidoPopulares = plataforma.getPopulares(cantidad);
+                    contenidoPopulares.forEach(contenido -> System.out.println(contenido.obtenerFichaTecnica()));
                 }
                 case ELIMINAR ->{
                     String nombreAEliminar= ScannerUtils.capturarTexto("Nombre de la pelicula que quieres eliminar: ");
